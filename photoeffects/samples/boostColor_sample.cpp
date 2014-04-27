@@ -4,11 +4,6 @@
 #include "photoeffects.hpp"
 #include <iostream>
 
-#include <stdio.h>
-#define TIMER_START(name) int64 t_##name = getTickCount()
-#define TIMER_END(name) printf("TIMER_" #name ":\t%6.2fms\n", \
-            1000.f * ((getTickCount() - t_##name) / getTickFrequency()))
-
 using namespace cv;
 using namespace std;
 
@@ -34,9 +29,9 @@ int main(int argc, char **argv)
     int errorCode = 0;
     try
     {
-		TIMER_START(ALL);
+		//TIMER_START(ALL);
         boostColor(img, dstImg, intensity);
-		TIMER_END(ALL);
+		//TIMER_END(ALL);
     }
     catch (cv::Exception &e)
     {
