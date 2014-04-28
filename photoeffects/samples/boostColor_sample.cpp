@@ -1,7 +1,5 @@
 #include "photoeffects.hpp"
 #include <stdlib.h>
-
-#include "photoeffects.hpp"
 #include <iostream>
 
 using namespace cv;
@@ -25,7 +23,6 @@ int main(int argc, char **argv)
         cout << helper << endl;
         return 1;
     }
-    
     int errorCode = 0;
     try
     {
