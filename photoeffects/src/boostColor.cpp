@@ -1,6 +1,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/internal.hpp>
 #include "photoeffects.hpp"
+#include "utils.hpp"
 
 using namespace cv;
 
@@ -21,6 +22,7 @@ public:
         srcStripe /= 255.0f;
         cvtColor(srcStripe, srcStripe, CV_BGR2HLS);
         int stripeWidht = srcStripe.rows;
+		//printf("%d\n", stripeWidht);
         for (int y = 0; y < stripeWidht; y++)
         {
             float* row = (float*)srcStripe.row(y).data;
@@ -54,16 +56,19 @@ int boostColor(InputArray src, OutputArray dst, float intensity)
     int srcImgType = srcImg.type();
     if (srcImgType != CV_32FC3)
     {
-		//TIMER_START(to_cv_32f);
+		TIMER_START(to_cv_32f);
         srcImg.convertTo(srcImg, CV_32FC3);
-		//TIMER_END(to_cv_32f);
+		TIMER_END(to_cv_32f);
     }
 
     dst.create(srcImg.size(), srcImg.type());
     Mat dstMat = dst.getMat();
-	
+	TIMER_START(parallel);
     parallel_for(BlockedRange(0, srcImg.rows), BoostColorInvoker(srcImg, dstMat, intensity));
+	TIMER_END(parallel);
+	TIMER_START(to_SrcType);
     dstMat.convertTo(dst, srcImgType);
+	TIMER_END(to_SrcType);
 
     return 0;
 }

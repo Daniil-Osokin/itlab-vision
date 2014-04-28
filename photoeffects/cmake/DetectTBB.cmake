@@ -1,18 +1,21 @@
 set(TBB_DEFAULT_INCLUDE_DIRS
-  "/opt/intel/tbb/include" "/usr/local/include" "/usr/include" "${CMAKE_INSTALL_PREFIX}/include")
+  "/opt/intel/tbb/include" "/usr/local/include" "/usr/include" "Z:/tbb42_20140122oss_win/tbb42_20140122oss/include" "${CMAKE_INSTALL_PREFIX}/include")
 find_path(TBB_INCLUDE_DIRS "tbb/tbb.h" PATHS ${TBB_INCLUDE_DIR} ${TBB_DEFAULT_INCLUDE_DIRS} DOC "The path to TBB headers")
-
+#message(${TBB_INCLUDE_DIRS})
 if(TBB_INCLUDE_DIRS)
+  include_directories("${TBB_INCLUDE_DIRS}")
   if(UNIX)
     set(TBB_LIB_DIR "${TBB_INCLUDE_DIRS}/../lib" CACHE PATH "Full path of TBB library directory")
   else()
-    set(TBB_LIB_DIR "" CACHE PATH "Full path of TBB library directory")
+    set(TBB_LIB_DIR Z:/tbb42_20140122oss_win/tbb42_20140122oss/lib/ia32/vc11)
+    #set(TBB_LIB_DIR "${TBB_INCLUDE_DIRS}/../lib/intel64/vc11" CACHE PATH "Full path of TBB library directory")
   endif()
+  #message(${TBB_LIB_DIR})
   if(NOT TBB_LIB_DIR)
     message(FATAL_ERROR "TBB_LIB_DIR is not found")
   endif()
   link_directories("${TBB_LIB_DIR}")
-
+  
   if(APPLE)
     set(LIBRARY_DEPS ${LIBRARY_DEPS} libtbb.dylib)
   else()
@@ -22,3 +25,9 @@ if(TBB_INCLUDE_DIRS)
 else()
   message(FATAL_ERROR "TBB is not found")
 endif()
+# get TBB version
+if(HAVE_TBB)
+  find_file(TBB_STDDEF_PATH tbb/tbb_stddef.h "${TBB_INCLUDE_DIRS}")
+  mark_as_advanced(TBB _STDDEF_PATH)
+endif()
+
