@@ -1,10 +1,6 @@
 #include "photoeffects.hpp"
 #include <stdlib.h>
-
-#include "photoeffects.hpp"
 #include <iostream>
-
-#include "utils.hpp"
 
 using namespace cv;
 using namespace std;
@@ -27,16 +23,10 @@ int main(int argc, char **argv)
         cout << helper << endl;
         return 1;
     }
-    printf("Count processors = %d\n", getNumberOfCPUs());
-	printf("Count threads = %d\n", getNumThreads());
-	//setNumThreads(1);
-	//printf("Count threads = %d\n", getNumThreads());
     int errorCode = 0;
     try
     {
-		TIMER_START(ALL);
         boostColor(img, dstImg, intensity);
-		TIMER_END(ALL);
     }
     catch (cv::Exception &e)
     {
